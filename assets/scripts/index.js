@@ -1,43 +1,37 @@
-const pegaText = document.getElementById("texto");
-const  btnEnviar = document.getElementById("btn-encaminhar");
-const insereLista = document.getElementById("ul")
+let countList = 0;
+let lista = [];
+const input = document.getElementById("inputTexto");
+const itens = document.getElementById("ul");
+const btnCriar = document.getElementById("btn-criar");
+btnCriar.addEventListener("click", createItem);
 
-btnEnviar.addEventListener("click",() => {
-    const useTexto = pegaText.value;
+function remove(item) {
+  const remItem = document.getElementById(item).textContent.split(" ");
+  let index = lista.indexOf(remItem[1]);
 
-    //criar novo elemento da lista
-    const lista = `
-       
-    <li class="list-group-item d-flex justify-content-between">
-    <div>
-        ${useTexto}
-          </div>
-        <button  class="btn btn btn-danger"> - </buton>
-            </li > 
-            `;
+  lista.splice(index, 1);
 
-    insereLista.insertAdjacentHTML("beforeend", lista);
+  document.getElementById(item).remove();
+  input.value = "";
+  input.focus();
+}
 
-        pegaText.value = "";
-    pegaText.focus();
-});
+function createItem() {
+  if (input.value === "") {
+    alert("Caixa de texto vazia, favor digitar um item!");
+  } else if (!lista.includes(input.value)) {
+    lista.push(input.value);
 
-document.addEventListener("click", (event) =>{
-        
-        const btnLimpa  = event.target;
+    const li = `<li id='item-${countList}' class="list-group-item d-flex justify-content-between align-items-center">
+     ${input.value} <button id="btn-${countList}" class="btn btn btn-danger" onclick="remove('item-${countList}')"><i class="fas fa-trash"></i></button>`;
 
-        const lista = btnLimpa.parentElement;
-        
-        
-        ul.removeChild(lista);  
-    
-});
+    itens.insertAdjacentHTML("beforeend", li);
 
+    countList++;
+  } else {
+    alert("Item já consta na lista, favor adicionar outro item!");
+  }
 
-
-
-
-
-
-
-
+  input.value = "";
+  input.focus();
+}
